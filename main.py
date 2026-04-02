@@ -83,9 +83,33 @@ def remover_arquivo(caminho,nome):
     else:
         print('O item deve ser um arquivo. Use rmdir para diretórios.')
         return
+def ler_arquivo(caminho,nome):
+    local = (caminho / nome).resolve()
+    extensoes_texto = ['.txt', '.py', '.log', '.md', '.json', '.html', '.css']
+    if not local.exists():
+        print('O arquivo não existe.')
+        return
+    if local.is_file():
+        if local.suffix.lower() not in extensoes_texto:
+            confirmar = input(f"O arquivo '{local.suffix}' pode ser binário. Deseja tentar ler mesmo assim? (s/n): ").lower()
+            if confirmar != 's':
+                return
+        try:
+            conteudo = local.read_text(encoding='utf-8', errors='replace')
+            print('='*50)
+            print(conteudo)
+            print('='*50)
+        except PermissionError:
+            print('Você não tem permissão para ler esse arquivo.')
+        except UnicodeDecodeError:
+            print('O arquivos contém binários e não pode ser lido.')
+        except OSError:
+            print('Não foi possível ler o arquivo.')
+    else:
+        print('O item deve ser um arquivo. Use md diretório para mudar de diretório ou ld para listar.')
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos")
-print('Versão 0.1.4')
+print('Versão 0.1.5')
 while True:
     entrada = input(f'{caminho_atual}>').strip().split(maxsplit=1)
     match entrada:
@@ -100,6 +124,7 @@ while True:
     rmdir - Remove o diretório especificado. Ex.: rmdir nome_do_diretorio.
     rnm - Renomeia um item espeicífico. Ex.: rnm nome_antigo nome_atual.
     rmarq - Remove um arquivo específico dentro do diretório atual. Ex.: rmarq nome_arquivo.
+    ler - Ler um arquivo específico dentro do diretório atual. Ex.: ler arquivo.txt.
 2 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
@@ -134,6 +159,10 @@ while True:
             print('Sintaxe incorreta. Digite rmarq nome do arquivo')
         case ['rmarq', nome]:
             remover_arquivo(caminho_atual,nome)
+        case ['ler']:
+            print('Sintaxe incorreta. Use ler arquivo')
+        case ['ler', nome]:
+            ler_arquivo(caminho_atual,nome)
         case ['sair']:
             break
         case _:
