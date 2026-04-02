@@ -68,6 +68,21 @@ def renomear(diretorio_atual,caminho_antigo,caminho_novo):
         print('Já existe um item com esse nome')
     except OSError:
         print('Falha ao renomear esse item')
+def remover_arquivo(caminho,nome):
+    local = (caminho / nome).resolve()
+    if not local.exists():
+        print('Arquivo não encontrado.')
+        return
+    if local.is_file():
+        try:
+            local.unlink()
+        except PermissionError:
+            print('Você não tem permissão para excluir esse arquivo.')
+        except OSError:
+            print('O arquivo está aberto em outro programa.')
+    else:
+        print('O item deve ser um arquivo. Use rmdir para diretórios.')
+        return
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos")
 print('Versão 0.1.4')
@@ -79,15 +94,16 @@ while True:
         case ['--comandos']:
             print('''Comandos:
 1. Manipulação de arquivos e diretórios:
-    dta - Mostra o diretório atual
-    md - Muda para o diretório fornecido. Ex.: md Documents
-    crdir - Cria um novo diretório usando o nome fornecido. Ex.: crdir nome_do_diretorio
+    dta - Mostra o diretório atual.
+    md - Muda para o diretório fornecido. Ex.: md Documents.
+    crdir - Cria um novo diretório usando o nome fornecido. Ex.: crdir nome_do_diretorio.
     rmdir - Remove o diretório especificado. Ex.: rmdir nome_do_diretorio.
-    rnm - Renomeia um item espeicífico. Ex.: rnm nome_antigo nome_atual
+    rnm - Renomeia um item espeicífico. Ex.: rnm nome_antigo nome_atual.
+    rmarq - Remove um arquivo específico dentro do diretório atual. Ex.: rmarq nome_arquivo.
 2 - Utilitários:
-    lp - Limpa a tela do terminal
-    sair - Sai do terminal
-    ld - Lista todos os arquivos e diretórios dentro do diretório atual''')
+    lp - Limpa a tela do terminal.
+    sair - Sai do terminal.
+    ld - Lista todos os arquivos e diretórios dentro do diretório atual.''')
         case ['ld']:
             listar_diretorio(caminho_atual)
         case ['dta']:
@@ -107,13 +123,17 @@ while True:
         case ['rmdir', nome]:
             remover_diretorio(caminho_atual,nome)
         case ['rnm']:
-            print('Sintaxe incorreta. Use rnm nome_antigo nome_atual')
+            print('Sintaxe incorreta. Use rnm nome antigo nome atual')
         case ['rnm', argumentos]:
             lista = argumentos.split()
             if len(lista) == 2:
                 renomear(caminho_atual,lista[0],lista[1])
             else:
                 print('Sintaxe incorreta! O comando rnm precisa de dois nomes')
+        case ['rmarq']:
+            print('Sintaxe incorreta. Digite rmarq nome do arquivo')
+        case ['rmarq', nome]:
+            remover_arquivo(caminho_atual,nome)
         case ['sair']:
             break
         case _:
