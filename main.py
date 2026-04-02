@@ -14,9 +14,12 @@ def mudar_diretorio(diretorio_atual, destino):
     else:
         print("Erro: O diretório não existe.")
         return diretorio_atual
+def limpar_tela():
+    # Esta sequência de caracteres limpa o console e volta o cursor para o topo
+    print("\033[H\033[J", end="")
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos")
-print('Versão 0.1.1')
+print('Versão 0.1.2')
 while True:
     entrada = input(f'{caminho_atual}>').split()
     match entrada:
@@ -25,14 +28,19 @@ while True:
 1. Navegação e localização:
     ld - Lista todos os arquivos e diretórios dentro do diretório atual
     dta - Mostra o diretório atual
-    md - Muda para o diretório fornecido. Ex.: md Documents''')
+    md - Muda para o diretório fornecido. Ex.: md Documents
+2. Utilitários:
+    lp - Limpa a tela do terminal
+    sair - Encerra o terminal''')
         case ['ld']:
             listar_diretorio(caminho_atual)
         case ['dta']:
             print(caminho_atual)
         case ['md', destino]:
             caminho_atual = mudar_diretorio(caminho_atual,destino)
-        case ['.']:
+        case ['lp']:
+            limpar_tela()
+        case ['sair']:
             break
         case _:
             print('Comando não encotrado')
