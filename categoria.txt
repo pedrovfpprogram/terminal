@@ -1,0 +1,52 @@
+1. Manipulação de Arquivos e Diretórios
+Estes são os equivalentes ao que você está construindo no seu terminal Python.
+
+copy: Copia um ou mais arquivos para outro local.
+
+xcopy: Uma versão mais poderosa do copy, que copia pastas e subpastas.
+
+robocopy: O "Rei da Cópia". Extremamente robusto para backups e grandes volumes de dados.
+
+del / erase: Apaga um ou mais arquivos.
+
+
+move: Move arquivos de uma pasta para outra.
+
+type: Exibe o conteúdo de um arquivo de texto na tela.
+
+2. Informações do Sistema
+systeminfo: Exibe configurações detalhadas do hardware e do Windows (RAM, processador, versão).
+
+ver: Mostra a versão exata do Windows.
+
+driverquery: Lista todos os drivers instalados no computador.
+
+tasklist: Mostra todos os programas e processos rodando no momento.
+
+taskkill: Fecha um programa travado (Ex: taskkill /f /im notepad.exe).
+
+3. Rede e Internet
+ipconfig: Mostra o seu endereço IP e detalhes da sua conexão.
+
+ping: Testa a conexão com um site ou outro computador (Ex: ping google.com).
+
+tracert: Traça a rota que os dados fazem até chegar a um destino.
+
+getmac: Mostra o endereço físico (MAC) da sua placa de rede.
+
+netstat: Mostra todas as conexões de rede ativas no PC.
+
+4. Disco e Manutenção
+chkdsk: Verifica se o HD ou SSD possui erros físicos ou lógicos.
+
+sfc /scannow: Verifica e repara arquivos corrompidos do próprio Windows.
+
+diskpart: Gerenciador de partições de disco (muito poderoso, cuidado ao usar).
+
+format: Formata um disco ou pendrive.
+
+5. Utilidades e Interface
+
+color: Muda a cor do fundo e das letras do CMD (Ex: color 0a deixa verde "hacker").
+
+echo: Exibe uma mensagem na tela ou cria um arquivo (Ex: echo Ola > teste.txt).
