@@ -14,6 +14,9 @@ def mudar_diretorio(diretorio_atual, destino):
     novo_caminho = (diretorio_atual / destino).resolve()
     if novo_caminho.exists() and novo_caminho.is_dir():
         return novo_caminho
+    elif novo_caminho.exists() and not novo_caminho.is_dir():
+        print('O destino especificado é um arquivo')
+        return diretorio_atual
     else:
         print("Erro: O diretório não existe.")
         return diretorio_atual
@@ -24,30 +27,39 @@ def criar_diretorio(caminho,nome):
     if local.exists():
         print("O diretório já existe")
         return
-    local.mkdir(parents=True, exist_ok=True)
+    try:
+        local.mkdir(parents=True, exist_ok=True)
+    except PermissionError:
+        print('Você não tem permissão para criar a pasta no diretório atual')
 def remover_diretorio(caminho,nome):
-    if not nome:
-        print("Insira o nome do diretório logo após o comando. Ex.: crdir nome_do_diretorio")
-        return
     local = (caminho / nome).resolve()
     if local.exists() and local.is_dir():
         try:
-            Path.rmdir(local)
-        except:
+            local.rmdir()
+        except OSError:
             valor = input('O diretório não está vazio. Continuar operação(s/n): ').lower()
             if valor == 's':
-                shutil.rmtree(local)
+                try:
+                    shutil.rmtree(local)
+                except PermissionError:
+                    print('Você não tem permissão para excluir esse diretório')
+                except OSError:
+                    print("Há um arquivo dentro do diretório aberto em outro local")
             else:
                 return
+        except PermissionError:
+            print('Você não tem permissão para excluir esse diretório')
     else:
         print('Diretório não encotrado')
         return
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos")
-print('Versão 0.1.1')
+print('Versão 0.1.3')
 while True:
-    entrada = input(f'{caminho_atual}>').split(maxsplit=1)
+    entrada = input(f'{caminho_atual}>').strip().split(maxsplit=1)
     match entrada:
+        case []:
+            continue
         case ['--comandos']:
             print('''Comandos:
 1. Manipulação de arquivos e diretórios:
@@ -63,12 +75,18 @@ while True:
             listar_diretorio(caminho_atual)
         case ['dta']:
             print(caminho_atual)
+        case ['md']:
+            print('Sintaxe incorreta. Digite o destino. Ex.: md Documents')
         case ['md', destino]:
             caminho_atual = mudar_diretorio(caminho_atual,destino)
         case ['lp']:
             limpar_tela()
+        case ['crdir']:
+            print('Digite o nome do diretório')
         case ['crdir', nome]:
             criar_diretorio(caminho_atual,nome)
+        case ['rmdir']:
+            print('Digite o nome do diretório')
         case ['rmdir', nome]:
             remover_diretorio(caminho_atual,nome)
         case ['sair']:
