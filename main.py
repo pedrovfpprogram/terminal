@@ -28,9 +28,9 @@ while True:
     dta - Mostra o diretório atual
     md - Muda para o diretório fornecido. Ex.: md Documents
 2 - Utilitários:
-lp - Limpa a tela do terminal
-sair - Sai do terminal
-ld - Lista todos os arquivos e diretórios dentro do diretório atual''')
+    lp - Limpa a tela do terminal
+    sair - Sai do terminal
+    ld - Lista todos os arquivos e diretórios dentro do diretório atual''')
         case ['ld']:
             listar_diretorio(caminho_atual)
         case ['dta']:
