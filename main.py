@@ -52,9 +52,25 @@ def remover_diretorio(caminho,nome):
     else:
         print('Diretório não encotrado')
         return
+def renomear(diretorio_atual,caminho_antigo,caminho_novo):
+    origem = (diretorio_atual / caminho_antigo).resolve()
+    destino = (diretorio_atual / caminho_novo).resolve()
+    if not origem.exists():
+        print('Arquivo/diretório não encotrado!')
+        return
+    if origem == destino:
+        print('Coloque um nome direferente do atual')
+    try:
+        origem.rename(destino)
+    except PermissionError:
+        print('Você não tem permissão para renomear esse item')
+    except FileExistsError:
+        print('Já existe um item com esse nome')
+    except OSError:
+        print('Falha ao renomear esse item')
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos")
-print('Versão 0.1.3')
+print('Versão 0.1.4')
 while True:
     entrada = input(f'{caminho_atual}>').strip().split(maxsplit=1)
     match entrada:
@@ -67,6 +83,7 @@ while True:
     md - Muda para o diretório fornecido. Ex.: md Documents
     crdir - Cria um novo diretório usando o nome fornecido. Ex.: crdir nome_do_diretorio
     rmdir - Remove o diretório especificado. Ex.: rmdir nome_do_diretorio.
+    rnm - Renomeia um item espeicífico. Ex.: rnm nome_antigo nome_atual
 2 - Utilitários:
     lp - Limpa a tela do terminal
     sair - Sai do terminal
@@ -89,6 +106,14 @@ while True:
             print('Digite o nome do diretório')
         case ['rmdir', nome]:
             remover_diretorio(caminho_atual,nome)
+        case ['rnm']:
+            print('Sintaxe incorreta. Use rnm nome_antigo nome_atual')
+        case ['rnm', argumentos]:
+            lista = argumentos.split()
+            if len(lista) == 2:
+                renomear(caminho_atual,lista[0],lista[1])
+            else:
+                print('Sintaxe incorreta! O comando rnm precisa de dois nomes')
         case ['sair']:
             break
         case _:
