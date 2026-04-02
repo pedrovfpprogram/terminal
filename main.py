@@ -1,6 +1,7 @@
 from pathlib import Path
 import shutil
 from colorama import init
+from datetime import datetime
 init(autoreset=True)
 caminho_atual = Path.home()
 def listar_diretorio(caminho):
@@ -107,6 +108,30 @@ def ler_arquivo(caminho,nome):
             print('Não foi possível ler o arquivo.')
     else:
         print('O item deve ser um arquivo. Use md diretório para mudar de diretório ou ld para listar.')
+def info(caminho,nome):
+    local = (caminho / nome).resolve()
+    if not local.exists():
+        print('O arquivo/pasta não existe')
+        return
+    stats = local.stat()
+    data_mod = datetime.fromtimestamp(stats.st_mtime).strftime('%d/%m/%Y %H:%M:%S')
+    tamanho_bytes = stats.st_size
+    tipo = "Diretório" if local.is_dir() else "Arquivo"
+    if tamanho_bytes < 1024:
+        tamanho = f'{tamanho_bytes} Bytes'
+    elif tamanho_bytes < 1024**2:
+        tamanho = f'{tamanho_bytes/ 1024:.2f} KB'
+    elif tamanho_bytes < 1024**3:
+        tamanho = f'{tamanho_bytes / (1024**2):.2f} MB'
+    else:
+        tamanho = f'{tamanho_bytes/ (1024**3):.2f} GB'
+    print(f"\n--- Informações: {local.name} ---")
+    print(f"Tipo: {tipo}")
+    print(f"Tamanho: {tamanho}")
+    print(f"Última modificação: {data_mod}")
+    if local.is_file():
+        print(f"Extensão: {local.suffix}")
+    print("-" * 30)
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos")
 print('Versão 0.1.5')
@@ -123,8 +148,9 @@ while True:
     crdir - Cria um novo diretório usando o nome fornecido. Ex.: crdir nome_do_diretorio.
     rmdir - Remove o diretório especificado. Ex.: rmdir nome_do_diretorio.
     rnm - Renomeia um item espeicífico. Ex.: rnm nome_antigo nome_atual.
-    rmarq - Remove um arquivo específico dentro do diretório atual. Ex.: rmarq nome_arquivo.
-    ler - Ler um arquivo específico dentro do diretório atual. Ex.: ler arquivo.txt.
+    rmarq - Remove um arquivo específico. Ex.: rmarq nome_arquivo.
+    ler - Ler um arquivo específico. Ex.: ler arquivo.txt.
+    info - Exibe as informações de um arquivo ou uma pasta. Ex.: info arquivo.txt.
 2 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
@@ -163,6 +189,10 @@ while True:
             print('Sintaxe incorreta. Use ler arquivo')
         case ['ler', nome]:
             ler_arquivo(caminho_atual,nome)
+        case ['info']:
+            print('Sintaxe incorreta. Tente info arquivo ou info pasta.')
+        case ['info', nome]:
+            info(caminho_atual,nome)
         case ['sair']:
             break
         case _:
