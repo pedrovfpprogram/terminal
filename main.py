@@ -157,6 +157,43 @@ def copiar_arquivo(caminho_atual,origem,destino):
             print('O caminho de destino não existe.')
         except OSError:
             print('Não foi possível copiar esse arquivo')
+def copiar_diretorio(caminho_atual,origem,destino):
+    local_origem = (caminho_atual / origem).resolve()
+    local_destino = (caminho_atual / destino).resolve()
+    if local_origem.is_file():
+        print("O caminho de origem deve ser um diretório. Use cparq para arquivos.")
+        return
+    if not local_origem.exists():
+        print('O diretório não existe.')
+        return
+    if local_destino.exists() and local_origem.is_dir():
+        local_destino = (local_destino / local_origem.name).resolve()
+    if local_destino.is_relative_to(local_origem):
+        print('Você não pode copiar a pasta para dentro de si mesma.')
+        return
+    try:
+        shutil.copytree(local_origem,local_destino,dirs_exist_ok=True)
+    except Exception as e:
+        print(f"Não foi possível concluir a ação. Erro {e}")
+def mover_item(caminho_atual,origem,destino):
+    local_origem = (caminho_atual / origem).resolve()
+    local_destino = (caminho_atual / destino).resolve()
+    if not local_origem.exists():
+        print('O item de origem não exsite.')
+        return
+    if local_destino.is_dir():
+        alvo_real = local_destino / local_origem.name
+    else:
+        alvo_real = local_destino
+    if alvo_real.is_relative_to(local_origem):
+        print('Você não pode mover um item para dentro de si mesmo.')
+        return
+    try:
+        shutil.move(str(local_origem),str(local_destino))
+    except PermissionError:
+        print('Você não tem permissão para mover esse item.')
+    except Exception as e:
+        print(f'Erro inesperado: {e}')
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos")
 print('Versão 0.1.6')
@@ -176,7 +213,9 @@ while True:
     rmarq - Remove um arquivo específico. Ex.: rmarq nome_arquivo.
     ler - Ler um arquivo específico. Ex.: ler arquivo.txt.
     info - Exibe as informações de um arquivo ou uma pasta. Ex.: info arquivo.txt.
-    cparq - Copia um arquivo para um diretório específico. Ex.: copiar arquivo.txt origem ou copiar origem destino/novo_nome para copiar e renomear o arquivo.
+    cparq - Copia um arquivo para um diretório específico. Ex.: cparq arquivo.txt origem ou cparq origem destino/novo_nome para copiar e renomear o arquivo.
+    cpdir - Copia um diretório para outro diretório específico. Ex.: cpdir origem destino.
+    mover - Move um item para um destino específico. Ex.: mover origem destino ou mover origem destino/novo_nome para mover e renomear o arquivo. 
 2 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
@@ -220,13 +259,29 @@ while True:
         case ['info', nome]:
             info(caminho_atual,nome)
         case ['cparq']:
-            print("Sintaxe incorreta! Tente copiar arquivo.txt destino")
+            print("Sintaxe incorreta! Tente: cparq arquivo.txt destino")
         case ['cparq', argumentos]:
             lista = argumentos.split()
             if len(lista) == 2:
-                copiar_arquivo(caminho_atual,lista[0],lista[1])
+                copiar_arquivo(caminho_atual, lista[0], lista[1])
             else:
-                print('O comando copy recebe dois argumentos, origem e destino.')
+                print('Erro: O comando cparq precisa de origem e destino.')
+        case ['cpdir']:
+            print("Sintaxe incorreta! Tente cpdir origem destino")
+        case ['cpdir', argumentos]:
+            lista = argumentos.split()
+            if len(lista) == 2:
+                copiar_diretorio(caminho_atual,lista[0],lista[1])
+            else:
+                print('O comando cpdir recebe dois argumentos, origem e destino.')
+        case ['mover']:
+            print("Sintaxe incorreta! Tente: mover origem destino")
+        case ['mover', argumentos]:
+            lista = argumentos.split()
+            if len(lista) == 2:
+                mover_item(caminho_atual, lista[0], lista[1])
+            else:
+                print('Erro: O comando mover precisa de origem e destino.')
         case ['sair']:
             break
         case _:
