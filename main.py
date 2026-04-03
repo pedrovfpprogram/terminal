@@ -134,7 +134,7 @@ def info(caminho,nome):
     print("-" * 30)
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos")
-print('Versão 0.1.5')
+print('Versão 0.1.6')
 while True:
     entrada = input(f'{caminho_atual}>').strip().split(maxsplit=1)
     match entrada:
@@ -151,6 +151,7 @@ while True:
     rmarq - Remove um arquivo específico. Ex.: rmarq nome_arquivo.
     ler - Ler um arquivo específico. Ex.: ler arquivo.txt.
     info - Exibe as informações de um arquivo ou uma pasta. Ex.: info arquivo.txt.
+    copiar - Copia um arquivo para um diretório específico. Ex.: copiar arquivo.txt origem ou copiar origem destino/novo_nome para copiar e renomear o arquivo.
 2 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
@@ -193,6 +194,14 @@ while True:
             print('Sintaxe incorreta. Tente info arquivo ou info pasta.')
         case ['info', nome]:
             info(caminho_atual,nome)
+        case ['copiar']:
+            print("Sintaxe incorreta! Tente copiar arquivo.txt destino")
+        case ['copiar', argumentos]:
+            lista = argumentos.split()
+            if len(lista) == 2:
+                pass
+            else:
+                print('O comando copy recebe dois argumentos, origem e destino.')
         case ['sair']:
             break
         case _:
