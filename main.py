@@ -247,7 +247,7 @@ while True:
     cparq - Copia um arquivo para um diretório específico. Ex.: cparq "origem" "destino" ou cparq "origem" "destino/novo nome" para copiar e renomear o arquivo.
     cpdir - Copia um diretório para outro diretório específico. Ex.: cpdir "origem" "destino".
     mover - Move um item para um destino específico. Ex.: mover "origem" "destino" ou mover "origem" "destino/novo nome" para mover e renomear o arquivo.
-    xcpdir - Uma versão mais poderosa do copy, que copia pastas e subpastas. Ex.: xcpdir 'origem' 'destino'.
+    xcp - Uma versão mais poderosa do copy, que copia pastas e subpastas. Ex.: xcp'origem' 'destino'.
 2 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
@@ -346,15 +346,15 @@ while True:
                     print("Erro: O comando mover precisa de 'origem' e 'destino'.")
             except ValueError:
                 print("Erro: Erro na sintaxe das aspas.")
-        case ['xcpdir']:
-            print("Sintaxe incorreta! Tente xcpdir 'origem' 'destino'")
-        case ['xcpdir', argumentos]:
+        case ['xcp']:
+            print("Sintaxe incorreta! Tente xcp 'origem' 'destino'")
+        case ['xcp', argumentos]:
             try:
                 lista = shlex.split(argumentos)
                 if len(lista) == 2:
                     xcopiar_diretorio(caminho_atual,lista[0],lista[1])
                 else:
-                    print("Erro: O comando xcpdir recebe dois argumentos, 'origem' e 'destino.'")
+                    print("Erro: O comando xcp recebe dois argumentos, 'origem' e 'destino.'")
             except ValueError:
                 print("Erro: Erro na sintaxe das aspas.")
         case ['sair']:
