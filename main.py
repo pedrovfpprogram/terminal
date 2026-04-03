@@ -195,6 +195,36 @@ def mover_item(caminho_atual,origem,destino):
         print('Você não tem permissão para mover esse item.')
     except Exception as e:
         print(f'Erro inesperado: {e}')
+def xcopiar_diretorio(caminho_atual,origem,destino):
+    local_origem = (caminho_atual / origem).resolve()
+    local_destino = (caminho_atual / destino).resolve()
+    if not local_origem.exists():
+        print('O item de origem não existe')
+        return
+    try:
+        if local_origem.is_file():
+            local_destino.parent.mkdir(parents=True,exist_ok=True)
+        else:
+            local_destino.mkdir(parents=True,exist_ok=True)
+    except PermissionError:
+        print('Você não tem permissão para criar as pastas de destino.')
+    if local_origem.is_file():
+        if local_destino.is_dir():
+            alvo_real = (local_destino / local_origem.name).resolve()
+        else:
+            alvo_real = local_destino
+        try:
+            shutil.copy2(local_origem,alvo_real)
+        except Exception as e:
+            print(f'Não foi possível concluir a ação. Erro {e}')
+    if local_origem.is_dir():
+        if local_destino.is_relative_to(local_origem):
+            print('Você não pode copiar um item para dentro dele mesmo.')
+            return
+        try:
+            shutil.copytree(local_origem,local_destino,dirs_exist_ok=True)
+        except Exception as e:
+            print(f'Não foi possível concluir a ação. Erro {e}')
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos\nColoque o caminho do diretório ou arquivos dentro de aspas.")
 print('Versão 0.1.6')
@@ -216,7 +246,8 @@ while True:
     info - Exibe as informações de um arquivo ou uma pasta. Ex.: info "arquivo.txt".
     cparq - Copia um arquivo para um diretório específico. Ex.: cparq "origem" "destino" ou cparq "origem" "destino/novo nome" para copiar e renomear o arquivo.
     cpdir - Copia um diretório para outro diretório específico. Ex.: cpdir "origem" "destino".
-    mover - Move um item para um destino específico. Ex.: mover "origem" "destino" ou mover "origem" "destino/novo nome" para mover e renomear o arquivo. 
+    mover - Move um item para um destino específico. Ex.: mover "origem" "destino" ou mover "origem" "destino/novo nome" para mover e renomear o arquivo.
+    xcpdir - Uma versão mais poderosa do copy, que copia pastas e subpastas. Ex.: xcpdir 'origem' 'destino'.
 2 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
@@ -226,7 +257,7 @@ while True:
         case ['dta']:
             print(caminho_atual)
         case ['md']:
-            print('Sintaxe incorreta. Digite o destino. Ex.: md Documents')
+            print("Sintaxe incorreta. Digite o destino. Ex.: md 'Documents'")
         case ['md', destino]:
             caminho_atual = mudar_diretorio(caminho_atual,destino)
         case ['lp']:
@@ -235,7 +266,6 @@ while True:
             print('Digite o nome do diretório')
         case ['crdir', nome]:
             try:
-                # shlex.split limpa as aspas: "Nova Pasta" vira Nova Pasta
                 nome_limpo = shlex.split(nome)[0] if '"' in nome or "'" in nome else nome
                 criar_diretorio(caminho_atual, nome_limpo)
             except Exception:
@@ -249,18 +279,18 @@ while True:
             except Exception:
                 remover_diretorio(caminho_atual, nome)
         case ['rnm']:
-            print('Sintaxe incorreta. Use rnm nome antigo nome atual')
+            print("Sintaxe incorreta. Use rnm 'nome antigo' 'nome atual'")
         case ['rnm', argumentos]:
             try:
                 lista = shlex.split(argumentos)
                 if len(lista) == 2:
                     renomear(caminho_atual, lista[0], lista[1])
                 else:
-                    print('Erro: O comando rnm precisa de nome_antigo e nome_novo.')
+                    print("Erro: O comando rnm precisa de 'nome antigo' e 'nome novo'.")
             except ValueError:
                 print("Erro: Certifique-se de fechar as aspas corretamente.")
         case ['rmarq']:
-            print('Sintaxe incorreta. Digite rmarq nome do arquivo')
+            print("Sintaxe incorreta. Digite rmarq 'nome do arquivo'")
         case ['rmarq', nome]:
             try:
                 nome_limpo = shlex.split(nome)[0] if '"' in nome or "'" in nome else nome
@@ -268,7 +298,7 @@ while True:
             except Exception:
                 remover_arquivo(caminho_atual, nome)
         case ['ler']:
-            print('Sintaxe incorreta. Use ler arquivo')
+            print("Sintaxe incorreta. Use ler 'arquivo'")
         case ['ler', nome]:
             try:
                 nome_limpo = shlex.split(nome)[0] if '"' in nome or "'" in nome else nome
@@ -276,7 +306,7 @@ while True:
             except Exception:
                 ler_arquivo(caminho_atual, nome)
         case ['info']:
-            print('Sintaxe incorreta. Tente info arquivo ou info pasta.')
+            print("Sintaxe incorreta. Tente info 'arquivo' ou info 'pasta'.")
         case ['info', nome]:
             try:
                 nome_limpo = shlex.split(nome)[0] if '"' in nome or "'" in nome else nome
@@ -284,36 +314,47 @@ while True:
             except Exception:
                 info(caminho_atual, nome)
         case ['cparq']:
-            print("Sintaxe incorreta! Tente: cparq arquivo.txt destino")
+            print("Sintaxe incorreta! Tente: cparq 'origem' 'destino'")
         case ['cparq', argumentos]:
             try:
                 lista = shlex.split(argumentos)
                 if len(lista) == 2:
                     copiar_arquivo(caminho_atual, lista[0], lista[1])
                 else:
-                    print('Erro: O comando cparq precisa de origem e destino.')
+                    print("Erro: O comando cparq precisa de 'origem' e 'destino'.")
             except ValueError:
                 print("Erro: Erro na sintaxe das aspas.")
         case ['cpdir']:
-            print("Sintaxe incorreta! Tente cpdir origem destino")
+            print("Sintaxe incorreta! Tente cpdir 'origem' 'destino'")
         case ['cpdir', argumentos]:
             try:
                 lista = shlex.split(argumentos)
                 if len(lista) == 2:
                     copiar_diretorio(caminho_atual, lista[0], lista[1])
                 else:
-                    print('Erro: O comando cpdir recebe dois argumentos, origem e destino.')
+                    print("Erro: O comando cpdir recebe dois argumentos, 'origem' e 'destino'.")
             except ValueError:
                 print("Erro: Erro na sintaxe das aspas.")
         case ['mover']:
-            print("Sintaxe incorreta! Tente: mover origem destino")
+            print("Sintaxe incorreta! Tente: mover 'origem' 'destino'")
         case ['mover', argumentos]:
             try:
                 lista = shlex.split(argumentos)
                 if len(lista) == 2:
                     mover_item(caminho_atual, lista[0], lista[1])
                 else:
-                    print('Erro: O comando mover precisa de origem e destino.')
+                    print("Erro: O comando mover precisa de 'origem' e 'destino'.")
+            except ValueError:
+                print("Erro: Erro na sintaxe das aspas.")
+        case ['xcpdir']:
+            print("Sintaxe incorreta! Tente xcpdir 'origem' 'destino'")
+        case ['xcpdir', argumentos]:
+            try:
+                lista = shlex.split(argumentos)
+                if len(lista) == 2:
+                    xcopiar_diretorio(caminho_atual,lista[0],lista[1])
+                else:
+                    print("Erro: O comando xcpdir recebe dois argumentos, 'origem' e 'destino.'")
             except ValueError:
                 print("Erro: Erro na sintaxe das aspas.")
         case ['sair']:
