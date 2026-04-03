@@ -225,6 +225,40 @@ def xcopiar_diretorio(caminho_atual,origem,destino):
             shutil.copytree(local_origem,local_destino,dirs_exist_ok=True)
         except Exception as e:
             print(f'Não foi possível concluir a ação. Erro {e}')
+def rcopiar_diretorio(caminho_atual,origem,destino):
+    local_origem = (caminho_atual / origem).resolve()
+    local_destino = (caminho_atual / destino).resolve()
+    arquivos_pulados = []
+    arquivos_copiados = []
+    if not local_origem.exists() or not local_origem.is_dir():
+        print('A origem deve ser um diretório existente.')
+        return
+    local_destino.mkdir(parents=True,exist_ok=True)
+    for item in local_origem.rglob('*'):
+        relativo = item.relative_to(local_origem)
+        alvo_real = (local_destino / relativo).resolve()
+        if item.is_dir():
+            alvo_real.mkdir(parents=True, exist_ok=True)
+        elif item.is_file():
+            copiar = True
+            
+            if alvo_real.exists():
+                stats_origem = item.stat()
+                stats_alvo = alvo_real.stat()
+                if stats_origem.st_size == stats_alvo.st_size and stats_origem.st_mtime <= stats_alvo.st_mtime:
+                    copiar = False
+            if copiar:
+                try:
+                    shutil.copy2(item, alvo_real)
+                    arquivos_copiados.append(item.name)
+                except Exception as e:
+                    print(f"Erro ao copiar {item.name}: {e}")
+            else:
+                arquivos_pulados.append(item.name)
+    print(f'{'-'*30}Resumo{'-'*30}')
+    print(f'Arquivos atualizados: {len(arquivos_copiados)}')
+    print(f'Arquivos já sincronizados: {len(arquivos_pulados)}')
+    print('-'*50)
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos\nColoque o caminho do diretório ou arquivos dentro de aspas.")
 print('Versão 0.1.6')
@@ -247,7 +281,8 @@ while True:
     cparq - Copia um arquivo para um diretório específico. Ex.: cparq "origem" "destino" ou cparq "origem" "destino/novo nome" para copiar e renomear o arquivo.
     cpdir - Copia um diretório para outro diretório específico. Ex.: cpdir "origem" "destino".
     mover - Move um item para um destino específico. Ex.: mover "origem" "destino" ou mover "origem" "destino/novo nome" para mover e renomear o arquivo.
-    xcp - Uma versão mais poderosa do copy, que copia pastas e subpastas. Ex.: xcp'origem' 'destino'.
+    xcp - Uma versão mais poderosa do copy, que copia pastas e subpastas. Ex.: xcp 'origem' 'destino'.
+    rcp - Extremamente robusto para backups e grandes volumes de dados. Ex.: rcp 'origem' 'destino'.
 2 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
@@ -355,6 +390,17 @@ while True:
                     xcopiar_diretorio(caminho_atual,lista[0],lista[1])
                 else:
                     print("Erro: O comando xcp recebe dois argumentos, 'origem' e 'destino.'")
+            except ValueError:
+                print("Erro: Erro na sintaxe das aspas.")
+        case ['rcp']:
+            print("Sintaxe incorreta! Tente rcp 'origem' 'destino'")
+        case ['rcp', argumentos]:
+            try:
+                lista = shlex.split(argumentos)
+                if len(lista) == 2:
+                    rcopiar_diretorio(caminho_atual,lista[0],lista[1])
+                else:
+                    print("Erro: O comando rcp recebe dois argumentos, 'origem' e 'destino.'")
             except ValueError:
                 print("Erro: Erro na sintaxe das aspas.")
         case ['sair']:
