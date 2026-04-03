@@ -1,13 +1,9 @@
 1. Manipulação de Arquivos e Diretórios
 Estes são os equivalentes ao que você está construindo no seu terminal Python.
 
-copy: Copia um ou mais arquivos para outro local.
-
 xcopy: Uma versão mais poderosa do copy, que copia pastas e subpastas.
 
 robocopy: O "Rei da Cópia". Extremamente robusto para backups e grandes volumes de dados.
-
-move: Move arquivos de uma pasta para outra.
 
 2. Informações do Sistema
 systeminfo: Exibe configurações detalhadas do hardware e do Windows (RAM, processador, versão).
