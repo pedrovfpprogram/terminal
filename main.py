@@ -132,6 +132,31 @@ def info(caminho,nome):
     if local.is_file():
         print(f"Extensão: {local.suffix}")
     print("-" * 30)
+def copiar_arquivo(caminho_atual,origem,destino):
+    local_origem = (caminho_atual / origem).resolve()
+    local_destino = (caminho_atual / destino).resolve()
+    if local_destino.is_dir():
+        alvo_real = (local_destino / local_origem.name).resolve()
+    else:
+        alvo_real = local_destino
+    if local_origem == alvo_real:
+        print('O local de origem e destino não podem ser mesmos.')
+        return
+    if not local_origem.exists():
+        print('O arquivo não existe.')
+        return
+    if local_origem.is_dir():
+        print('O comando cparq só consegue copiar arquivos e não diretórios.')
+        return
+    if local_origem.is_file():
+        try:
+            shutil.copy2(local_origem,local_destino)
+        except PermissionError:
+            print('Você não tem permissão para copiar esse arquivo.')
+        except FileNotFoundError:
+            print('O caminho de destino não existe.')
+        except OSError:
+            print('Não foi possível copiar esse arquivo')
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos")
 print('Versão 0.1.6')
@@ -151,7 +176,7 @@ while True:
     rmarq - Remove um arquivo específico. Ex.: rmarq nome_arquivo.
     ler - Ler um arquivo específico. Ex.: ler arquivo.txt.
     info - Exibe as informações de um arquivo ou uma pasta. Ex.: info arquivo.txt.
-    copiar - Copia um arquivo para um diretório específico. Ex.: copiar arquivo.txt origem ou copiar origem destino/novo_nome para copiar e renomear o arquivo.
+    cparq - Copia um arquivo para um diretório específico. Ex.: copiar arquivo.txt origem ou copiar origem destino/novo_nome para copiar e renomear o arquivo.
 2 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
@@ -194,12 +219,12 @@ while True:
             print('Sintaxe incorreta. Tente info arquivo ou info pasta.')
         case ['info', nome]:
             info(caminho_atual,nome)
-        case ['copiar']:
+        case ['cparq']:
             print("Sintaxe incorreta! Tente copiar arquivo.txt destino")
-        case ['copiar', argumentos]:
+        case ['cparq', argumentos]:
             lista = argumentos.split()
             if len(lista) == 2:
-                pass
+                copiar_arquivo(caminho_atual,lista[0],lista[1])
             else:
                 print('O comando copy recebe dois argumentos, origem e destino.')
         case ['sair']:
