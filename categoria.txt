@@ -1,16 +1,7 @@
 1. Manipulação de Arquivos e Diretórios
 Estes são os equivalentes ao que você está construindo no seu terminal Python.
 
-robocopy: O "Rei da Cópia". Extremamente robusto para backups e grandes volumes de dados.
-
 2. Informações do Sistema
-systeminfo: Exibe configurações detalhadas do hardware e do Windows (RAM, processador, versão).
-
-ver: Mostra a versão exata do Windows.
-
-driverquery: Lista todos os drivers instalados no computador.
-
-tasklist: Mostra todos os programas e processos rodando no momento.
 
 taskkill: Fecha um programa travado (Ex: taskkill /f /im notepad.exe).
 

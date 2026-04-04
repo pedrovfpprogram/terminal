@@ -3,6 +3,7 @@ import shutil
 from colorama import init
 from datetime import datetime
 import shlex
+import subprocess
 init(autoreset=True)
 caminho_atual = Path.home()
 def listar_diretorio(caminho):
@@ -259,9 +260,20 @@ def rcopiar_diretorio(caminho_atual,origem,destino):
     print(f'Arquivos atualizados: {len(arquivos_copiados)}')
     print(f'Arquivos já sincronizados: {len(arquivos_pulados)}')
     print('-'*50)
+def executar_comando_simples(comando, titulo):
+    try:
+        resultado = subprocess.run(comando, shell=True, capture_output=True, text=True, encoding='cp850')
+        if resultado.returncode == 0:
+            print(f"\n{'-'*30} {titulo} {'-'*30}")
+            print(resultado.stdout)
+            print('-' * (62 + len(titulo)) + '\n')
+        else:
+            print(f"Erro ao executar {comando}: {resultado.stderr}")
+    except Exception as e:
+        print(f"Falha ao processar o comando do sistema: {e}")
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos\nColoque o caminho do diretório ou arquivos dentro de aspas.")
-print('Versão 0.1.6')
+print('Versão 0.2.0')
 while True:
     entrada = input(f'{caminho_atual}>').strip().split(maxsplit=1)
     match entrada:
@@ -283,7 +295,12 @@ while True:
     mover - Move um item para um destino específico. Ex.: mover "origem" "destino" ou mover "origem" "destino/novo nome" para mover e renomear o arquivo.
     xcp - Uma versão mais poderosa do copy, que copia pastas e subpastas. Ex.: xcp 'origem' 'destino'.
     rcp - Extremamente robusto para backups e grandes volumes de dados. Ex.: rcp 'origem' 'destino'.
-2 - Utilitários:
+2 - Informação do sistema:
+    infosis - Exibe configurações detalhadas do hardware e do Windows (RAM, processador, versão). Ex.: infosis
+    ver - Mostra a versão exata do Windows. Ex.: ver
+    drivers - Lista todos os drivers instalados no computador. Ex.: drivers
+    processos - Mostra todos os programas e processos rodando no momento. Ex.: processos
+3 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
     ld - Lista todos os arquivos e diretórios dentro do diretório atual.''')
@@ -403,6 +420,16 @@ while True:
                     print("Erro: O comando rcp recebe dois argumentos, 'origem' e 'destino.'")
             except ValueError:
                 print("Erro: Erro na sintaxe das aspas.")
+        case ['infosis']:
+            print('Coletando dados do Hardware e do Sistema Operacional... Aguarde alguns segundos.')
+            executar_comando_simples('systeminfo', 'Informações do Sistema')
+        case ['ver']:
+            executar_comando_simples('ver','Versão do Windows')
+        case ['drivers']:
+            print('Procurando por drivers instalados... Aguarde alguns segundos.')
+            executar_comando_simples('driverquery','Lista de Drivers')
+        case ['processos']:
+            executar_comando_simples('tasklist','Processos em Execução')
         case ['sair']:
             break
         case _:
