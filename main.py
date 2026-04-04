@@ -152,7 +152,7 @@ def copiar_arquivo(caminho_atual,origem,destino):
         return
     if local_origem.is_file():
         try:
-            shutil.copy2(local_origem,local_destino)
+            shutil.copy2(local_origem, alvo_real)
         except PermissionError:
             print('Você não tem permissão para copiar esse arquivo.')
         except FileNotFoundError:
@@ -191,7 +191,7 @@ def mover_item(caminho_atual,origem,destino):
         print('Você não pode mover um item para dentro de si mesmo.')
         return
     try:
-        shutil.move(str(local_origem),str(local_destino))
+        shutil.move(str(local_origem),str(alvo_real))
     except PermissionError:
         print('Você não tem permissão para mover esse item.')
     except Exception as e:
@@ -271,6 +271,23 @@ def executar_comando_simples(comando, titulo):
             print(f"Erro ao executar {comando}: {resultado.stderr}")
     except Exception as e:
         print(f"Falha ao processar o comando do sistema: {e}")
+def obter_info_filtrada():
+    print('Coletando apenas dados essenciais... Aguarde.')
+    try:
+        # Pegamos a saída bruta do comando
+        resultado = subprocess.run('systeminfo', shell=True, capture_output=True, text=True, encoding='cp850')
+        if resultado.returncode == 0:
+            linhas = resultado.stdout.split('\n')
+            print(f"\n{'-'*20} RESUMO DO SISTEMA {'-'*20}")
+            alvos = ["Nome do host", "Nome do SO", "Fabricante do sistema", "Processador(es)", "Memória física total", "Memória física disponível"]
+            for linha in linhas:
+                if any(linha.strip().startswith(alvo) for alvo in alvos):
+                    print(linha.strip())
+            print('-'*57 + '\n')
+        else:
+            print(f"Erro ao coletar dados: {resultado.stderr}")
+    except Exception as e:
+        print(f"Erro técnico: {e}")
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos\nColoque o caminho do diretório ou arquivos dentro de aspas.")
 print('Versão 0.2.0')
@@ -296,10 +313,11 @@ while True:
     xcp - Uma versão mais poderosa do copy, que copia pastas e subpastas. Ex.: xcp 'origem' 'destino'.
     rcp - Extremamente robusto para backups e grandes volumes de dados. Ex.: rcp 'origem' 'destino'.
 2 - Informação do sistema:
-    infosis - Exibe configurações detalhadas do hardware e do Windows (RAM, processador, versão). Ex.: infosis
+    infosis - Exibe configurações detalhadas do hardware e do Windows (RAM, processador, versão). Ex.: infosis ou infosis --resumo para filtrar palavras-chaves específicas.
     ver - Mostra a versão exata do Windows. Ex.: ver
     drivers - Lista todos os drivers instalados no computador. Ex.: drivers
     processos - Mostra todos os programas e processos rodando no momento. Ex.: processos
+    encerrar - Fecha um programa travado. Ex.: encerrar 'notepad.exe')
 3 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
@@ -420,9 +438,14 @@ while True:
                     print("Erro: O comando rcp recebe dois argumentos, 'origem' e 'destino.'")
             except ValueError:
                 print("Erro: Erro na sintaxe das aspas.")
+        case ['infosis', argumento]:
+            if argumento == '--resumo':
+                obter_info_filtrada()
+            else:
+                print("Opção inválida. Use 'infosis' para completo ou 'infosis --resumo'.")
         case ['infosis']:
             print('Coletando dados do Hardware e do Sistema Operacional... Aguarde alguns segundos.')
-            executar_comando_simples('systeminfo', 'Informações do Sistema')
+            executar_comando_simples('systeminfo','Informação do Sistema')
         case ['ver']:
             executar_comando_simples('ver','Versão do Windows')
         case ['drivers']:
@@ -430,6 +453,15 @@ while True:
             executar_comando_simples('driverquery','Lista de Drivers')
         case ['processos']:
             executar_comando_simples('tasklist','Processos em Execução')
+        case ['encerrar']:
+            print("Sintaxe errada. Tente encerrar 'processo.exe'")
+        case ['encerrar', processo]:
+            try:
+                limpador_processo = shlex.split(processo)[0]
+                print(f'Tentando encerrar o processo {limpador_processo}')
+                executar_comando_simples(f'taskkill /F /IM {limpador_processo}','Resultado do Encerramento')
+            except Exception:
+                print("Erro de sintaxe. Tente encerrar 'processo.exe'")
         case ['sair']:
             break
         case _:
