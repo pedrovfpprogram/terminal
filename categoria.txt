@@ -1,9 +1,5 @@
 3. Rede e Internet
 
-getmac: Mostra o endereço físico (MAC) da sua placa de rede.
-
-netstat: Mostra todas as conexões de rede ativas no PC.
-
 4. Disco e Manutenção
 chkdsk: Verifica se o HD ou SSD possui erros físicos ou lógicos.
 
