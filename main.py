@@ -321,6 +321,7 @@ while True:
 3 - Rede e Internet
     rede - Mostra o seu endereço IP e detalhes da sua conexão. Ex.: rede ou rede --tudo para detalhes completos da rede.
     teste - Testa a conexão com um site ou IP específico. Ex.: testar 'google.com'.'
+    rota - Mostra o caminho que os dados fazem para chegar a um site ou IP. Ex.: rota 'google.com'.
 4 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
@@ -478,6 +479,13 @@ while True:
             alvo = shlex.split(destino)[0] if '"' in destino or "'" in destino else destino
             print(f"Testando conexão com {alvo}... Aguarde.")
             executar_comando_simples(f'ping {alvo}', f'Teste de Conectividade: {alvo}')
+        case ['rota']:
+            print("Sintaxe: rota 'google.com' ou rota '8.8.8.8'")
+        case ['rota', destino]:
+            alvo = shlex.split(destino)[0] if '"' in destino or "'" in destino else destino
+            print(f"Traçando a rota para {alvo}...")
+            print("Isso pode levar de 30 segundos a alguns minutos. Aguarde.")
+            executar_comando_simples(f'tracert {alvo}', f'Rota de Dados: {alvo}')
         case ['sair']:
             break
         case _:

@@ -1,9 +1,5 @@
 3. Rede e Internet
 
-ping: Testa a conexão com um site ou outro computador (Ex: ping google.com).
-
-tracert: Traça a rota que os dados fazem até chegar a um destino.
-
 getmac: Mostra o endereço físico (MAC) da sua placa de rede.
 
 netstat: Mostra todas as conexões de rede ativas no PC.
