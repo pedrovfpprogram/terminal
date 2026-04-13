@@ -3,9 +3,9 @@
 
 ---
 
-## Versão 0.2.1
+## Versão 0.3.3
 <ul>
-  <li>Corrigindo bugs.</li>
+  <li>Adicionado comandos de rede.</li>
 </ul>
 
 ---
