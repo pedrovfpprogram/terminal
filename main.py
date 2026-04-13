@@ -290,7 +290,7 @@ def obter_info_filtrada():
         print(f"Erro técnico: {e}")
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos\nColoque o caminho do diretório ou arquivos dentro de aspas.")
-print('Versão 0.2.0')
+print('Versão 0.3.0')
 while True:
     entrada = input(f'{caminho_atual}>').strip().split(maxsplit=1)
     match entrada:
@@ -318,7 +318,9 @@ while True:
     drivers - Lista todos os drivers instalados no computador. Ex.: drivers
     processos - Mostra todos os programas e processos rodando no momento. Ex.: processos
     encerrar - Fecha um programa travado. Ex.: encerrar 'notepad.exe')
-3 - Utilitários:
+3 - Rede e Internet
+    rede - Mostra o seu endereço IP e detalhes da sua conexão. Ex.: rede ou rede --tudo para detalhes completos da rede.
+4 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
     ld - Lista todos os arquivos e diretórios dentro do diretório atual.''')
@@ -462,6 +464,13 @@ while True:
                 executar_comando_simples(f'taskkill /F /IM {limpador_processo}','Resultado do Encerramento')
             except Exception:
                 print("Erro de sintaxe. Tente encerrar 'processo.exe'")
+        case ['rede']:
+            executar_comando_simples('ipconfig', 'Configurações de Rede')
+        case ['rede', argumento]:
+            if argumento == '--tudo':
+                executar_comando_simples('ipconfig /all', 'Configurações de Rede Detalhadas')
+            else:
+                print("Opção inválida. Use 'rede' ou 'rede --tudo'.")
         case ['sair']:
             break
         case _:
