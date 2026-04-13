@@ -1,5 +1,4 @@
 3. Rede e Internet
-ipconfig: Mostra o seu endereço IP e detalhes da sua conexão.
 
 ping: Testa a conexão com um site ou outro computador (Ex: ping google.com).
 

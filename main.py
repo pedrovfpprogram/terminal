@@ -320,6 +320,7 @@ while True:
     encerrar - Fecha um programa travado. Ex.: encerrar 'notepad.exe')
 3 - Rede e Internet
     rede - Mostra o seu endereço IP e detalhes da sua conexão. Ex.: rede ou rede --tudo para detalhes completos da rede.
+    teste - Testa a conexão com um site ou IP específico. Ex.: testar 'google.com'.'
 4 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
@@ -471,6 +472,12 @@ while True:
                 executar_comando_simples('ipconfig /all', 'Configurações de Rede Detalhadas')
             else:
                 print("Opção inválida. Use 'rede' ou 'rede --tudo'.")
+        case ['testar']:
+            print("Sintaxe: testar 'google.com' ou testar '192.168.1.1'")
+        case ['testar', destino]:
+            alvo = shlex.split(destino)[0] if '"' in destino or "'" in destino else destino
+            print(f"Testando conexão com {alvo}... Aguarde.")
+            executar_comando_simples(f'ping {alvo}', f'Teste de Conectividade: {alvo}')
         case ['sair']:
             break
         case _:
