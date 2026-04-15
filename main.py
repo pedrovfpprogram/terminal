@@ -320,7 +320,7 @@ while True:
     encerrar - Fecha um programa travado. Ex.: encerrar 'notepad.exe')
 3 - Rede e Internet
     rede - Mostra o seu endereço IP e detalhes da sua conexão. Ex.: rede ou rede --tudo para detalhes completos da rede.
-    teste - Testa a conexão com um site ou IP específico. Ex.: testar 'google.com'.'
+    testar - Testa a conexão com um site ou IP específico. Ex.: testar 'google.com'.'
     rota - Mostra o caminho que os dados fazem para chegar a um site ou IP. Ex.: rota 'google.com'.
     idrede - Exibe o endereço físico (MAC) da sua placa de rede. Ex.: idrede
     conexoes - Lista todas as conexões de rede ativas no momento. Ex.: conexoes

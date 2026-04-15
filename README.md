@@ -3,9 +3,10 @@
 
 ---
 
-## Versão 0.3.3
+## Versão 0.3.3.1
 <ul>
   <li>Adicionado comandos de rede.</li>
+  <li>Corrigindo erros no --comandos<li>
 </ul>
 
 ---
