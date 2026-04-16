@@ -4,6 +4,15 @@ from colorama import init
 from datetime import datetime
 import shlex
 import subprocess
+import ctypes, os
+def eh_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+if not eh_admin():
+    print("!] AVISO: O terminal não está rodando como Administrador.")
+    print("!] Comandos de manutenção (chkdsk, sfc) podem não funcionar.\n")
 init(autoreset=True)
 caminho_atual = Path.home()
 def listar_diretorio(caminho):
@@ -326,6 +335,7 @@ while True:
     conexoes - Lista todas as conexões de rede ativas no momento. Ex.: conexoes
 4 - Disco e manutenção:
     verificar_disco - Verifica a integridade de um disco específico. Ex.: verificar_disco 'C:' ou verificar_disco 'D:'. Nota: Para corrigir erros, o terminal deve estar em modo Administrador.
+    reparar - Inicia o Verificador de Arquivos do Sistema para reparar arquivos corrompidos do Windows. Ex.: reparar. Nota: O terminal deve estar em modo Administrador para usar esse comando.
 5 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
@@ -502,6 +512,15 @@ while True:
             print(f"Iniciando verificação da unidade {drive}...")
             print("Nota: Para corrigir erros, o terminal deve estar em modo Administrador.")
             executar_comando_simples(f'chkdsk {drive}', f'Integridade do Disco: {drive}')
+        case ['reparar']:
+            if not eh_admin():
+                print("Erro: O comando 'reparar' exige privilégios de Administrador.")
+                print("Dica: Clique com o botão direito no terminal e selecione 'Executar como Administrador'.")
+                continue
+            print("Iniciando o Verificador de Arquivos do Sistema...")
+            print("O Windows irá verificar a integridade de todos os arquivos protegidos.")
+            print("Isso pode levar de 5 a 15 minutos. Não feche o terminal.")
+            executar_comando_simples('sfc /scannow', 'Reparo de Arquivos do Windows')
         case ['sair']:
             break
         case _:
