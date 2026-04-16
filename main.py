@@ -290,7 +290,7 @@ def obter_info_filtrada():
         print(f"Erro técnico: {e}")
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos\nColoque o caminho do diretório ou arquivos dentro de aspas.")
-print('Versão 0.3.0')
+print('Versão 0.4.0')
 while True:
     entrada = input(f'{caminho_atual}>').strip().split(maxsplit=1)
     match entrada:
@@ -324,7 +324,9 @@ while True:
     rota - Mostra o caminho que os dados fazem para chegar a um site ou IP. Ex.: rota 'google.com'.
     idrede - Exibe o endereço físico (MAC) da sua placa de rede. Ex.: idrede
     conexoes - Lista todas as conexões de rede ativas no momento. Ex.: conexoes
-4 - Utilitários:
+4 - Disco e manutenção:
+    verificar_disco - Verifica a integridade de um disco específico. Ex.: verificar_disco 'C:' ou verificar_disco 'D:'. Nota: Para corrigir erros, o terminal deve estar em modo Administrador.
+5 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
     ld - Lista todos os arquivos e diretórios dentro do diretório atual.''')
@@ -493,6 +495,13 @@ while True:
         case ['conexoes']:
             print("Listando conexões ativas... Isso pode levar alguns segundos.")
             executar_comando_simples('netstat -an', 'Conexões de Rede Ativas')
+        case ['verificar_disco']:
+            print("Sintaxe: verificar_disco 'C:' ou verificar_disco 'D:'")
+        case ['verificar_disco', unidade]:
+            drive = shlex.split(unidade)[0] if '"' in unidade or "'" in unidade else unidade
+            print(f"Iniciando verificação da unidade {drive}...")
+            print("Nota: Para corrigir erros, o terminal deve estar em modo Administrador.")
+            executar_comando_simples(f'chkdsk {drive}', f'Integridade do Disco: {drive}')
         case ['sair']:
             break
         case _:

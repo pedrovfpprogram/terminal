@@ -3,10 +3,9 @@
 
 ---
 
-## Versão 0.3.3.1
+## Versão 0.4.0
 <ul>
-  <li>Adicionado comandos de rede.</li>
-  <li>Corrigindo erros no --comandos<li>
+  <li>Adicionado comando verificar_disco</li>
 </ul>
 
 ---

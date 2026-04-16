@@ -1,7 +1,4 @@
-3. Rede e Internet
-
 4. Disco e Manutenção
-chkdsk: Verifica se o HD ou SSD possui erros físicos ou lógicos.
 
 sfc /scannow: Verifica e repara arquivos corrompidos do próprio Windows.
 
