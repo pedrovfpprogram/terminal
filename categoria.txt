@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 Lista de próximas atualizações prevista:
 4. Disco e Manutenção
 
+=======
+4. Disco e Manutenção
+
+sfc /scannow: Verifica e repara arquivos corrompidos do próprio Windows.
+
+diskpart: Gerenciador de partições de disco (muito poderoso, cuidado ao usar).
+
+>>>>>>> 310a5dc08d2b25df17334f2d9217f799f441ab82
 format: Formata um disco ou pendrive.
 
 5. Utilidades e Interface
