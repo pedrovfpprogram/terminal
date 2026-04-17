@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal.br - O seu Windows em Português</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d0d0d;
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            padding: 80px 20px;
+            text-align: center;
+            border-bottom: 3px solid #00ff41;
+        }
+        h1 {
+            color: #00ff41;
+            font-size: 3.5rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+        .tagline {
+            font-size: 1.3rem;
+            color: #aaaaaa;
+            margin-top: 15px;
+            font-weight: 300;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 30px;
+        }
+        .section {
+            margin-bottom: 70px;
+        }
+        h2 {
+            color: #00ff41;
+            border-left: 5px solid #00ff41;
+            padding-left: 20px;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        .terminal-mockup {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            padding: 25px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            border: 1px solid #333;
+            margin: 30px 0;
+        }
+        .term-header {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .term-line { margin-bottom: 8px; font-size: 1.1rem; }
+        .prompt { color: #00ff41; font-weight: bold; }
+        .cmd { color: #ffffff; }
+        .output { color: #bbbbbb; }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .feature-card {
+            background: #161616;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #222;
+            transition: transform 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ff41;
+        }
+        .feature-card h3 {
+            color: #00ff41;
+            margin-top: 0;
+        }
+        .version-badge {
+            background-color: #00ff41;
+            color: #000;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+        footer {
+            text-align: center;
+            padding: 60px;
+            color: #555;
+            border-top: 1px solid #222;
+        }
+        .btn-download {
+            display: inline-block;
+            background-color: #00ff41;
+            color: #000;
+            padding: 18px 40px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 25px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(0, 255, 65, 0.2);
+        }
+        .btn-download:hover {
+            background-color: #00cc33;
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.5);
+            transform: scale(1.05);
+        }
+        .download-info {
+            display: block;
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Terminal.br</h1>
+    <p class="tagline">O poder do Windows, simplificado em Português.</p>
+    
+    <a href="https://github.com/pedrovfpprogram/terminal/releases/download/0.5.0/main.exe" download class="btn-download">
+        📥 Baixar Terminal.br (EXE)
+    </a>
+    <span class="download-info">Compatível com Windows 10/11 | Versão 0.5.0</span>
+</header>
+
+<div class="container">
+    
+    <div class="section">
+        <h2>Controle Sem Barreiras</h2>
+        <p>O <strong>Terminal.br</strong> traduz a complexidade do sistema operacional para comandos intuitivos. Projetado para quem busca produtividade sem precisar decorar flags em inglês.</p>
+        
+        <div class="terminal-mockup">
+            <div class="term-header">Terminal.br [v0.5.0]</div>
+            <div class="term-line"><span class="prompt">C:\></span> <span class="cmd">reparar</span></div>
+            <div class="term-line" style="color: #00aaaa;">Iniciando verificação de arquivos...</div>
+            <div class="term-line"><span class="output">Verificação concluída. Nenhum erro encontrado.</span></div>
+            <div class="term-line"><span class="prompt">C:\></span> <span class="cmd">_</span></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Funcionalidades Atuais <span class="version-badge">v0.5.0</span></h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>🛡️ Manutenção</h3>
+                <p>Repare o Windows e verifique discos com <code>reparar</code> e <code>verificar_disco</code>.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🌐 Rede</h3>
+                <p>Diagnósticos rápidos com <code>rede</code>, <code>testar</code> e <code>rota</code>.</p>
+            </div>
+            <div class="feature-card">
+                <h3>💾 Discos</h3>
+                <p>Gerenciamento avançado com <code>particoes</code> e <code>formatar</code>.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🎨 Visual</h3>
+                <p>Personalize o seu console com o comando <code>tema</code>.</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>Terminal.br &copy; 2026 - Desenvolvido por Pedro.</p>
+</footer>
+
+</body>
+</html>
