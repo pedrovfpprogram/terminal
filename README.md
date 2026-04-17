@@ -5,8 +5,8 @@
 
 ## Versão 0.5.0
 
-### Atualização das cores:
-<p>Agora você pode personalizar o tema do seu terminal.</p>
+### Atualização das cores 🔴🟢🟡:
+**<p>Agora você pode personalizar o tema do seu terminal.</p>**
 <p>Tabela de referência:</p>
 <p>0 = Preto, 1 = Azul, 2 = Verde, 3 = Verde-água, 4 = Vermelho, 5 = Roxo, 6 = Amarelo, 7 = Branco, 8 = Cinza, 9 = Azul claro. A = Verde claro, B = Verde-água claro, C = Vermelho claro, D = Lilás, E = Amarelo claro, F = Branco brilhante.</p>
 
