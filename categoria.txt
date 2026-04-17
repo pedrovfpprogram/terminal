@@ -1,0 +1,10 @@
+Lista de próximas atualizações prevista:
+4. Disco e Manutenção
+
+format: Formata um disco ou pendrive.
+
+5. Utilidades e Interface
+
+color: Muda a cor do fundo e das letras do CMD (Ex: color 0a deixa verde "hacker").
+
+echo: Exibe uma mensagem na tela ou cria um arquivo (Ex: echo Ola > teste.txt).
