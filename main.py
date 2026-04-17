@@ -343,6 +343,7 @@ while True:
     Tabela de Referência:
         0 = Preto, 1 = Azul, 2 = Verde, 3 = Verde-água, 4 = Vermelho, 5 = Roxo, 6 = Amarelo, 7 = Branco, 8 = Cinza, 9 = Azul claro.
         A = Verde claro, B = Verde-água claro, C = Vermelho claro, D = Lilás, E = Amarelo claro, F = Branco brilhante.
+    saida - Exibe uma mensagem ou redireciona a mensagem para um arquivo. Ex.: echo 'Olá, mundo!' ou echo 'Olá, mundo!' > saudacao.txt
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
     ld - Lista todos os arquivos e diretórios dentro do diretório atual.''')
@@ -572,6 +573,13 @@ while True:
             resultado = subprocess.run(f'color {codigo}', shell=True)
             if resultado.returncode != 0:
                 print(f"Erro: O código '{codigo}' não é uma combinação de cores válida.")
+        case ['saida']:
+            print("Sintaxe: echo [mensagem] ou echo [mensagem] > [arquivo.txt]")
+        case ['saida', conteúdo]:
+            try:
+                subprocess.run(f'echo {conteúdo}', shell=True)
+            except Exception as e:
+                print(f"Erro ao executar echo: {e}")
         case ['sair']:
             break
         case _:
