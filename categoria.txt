@@ -1,5 +1,1 @@
 Lista de próximas atualizações prevista:
-
-5. Utilidades e Interface
-
-echo: Exibe uma mensagem na tela ou cria um arquivo (Ex: echo Ola > teste.txt).
