@@ -299,7 +299,7 @@ def obter_info_filtrada():
         print(f"Erro técnico: {e}")
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos\nColoque o caminho do diretório ou arquivos dentro de aspas.")
-print('Versão 0.4.0')
+print('Versão 0.5.0')
 while True:
     entrada = input(f'{caminho_atual}>').strip().split(maxsplit=1)
     match entrada:
@@ -339,6 +339,10 @@ while True:
     particoes - Abre o Gerenciador de Partições do Windows (Diskpart). CUIDADO: Comandos mal executados podem apagar dados permanentemente. Ex.: particoes
     formatar - Formata uma unidade específica. Ex.: formatar 'D:' 'ntfs' ou formatar 'E:' 'fat32'. Nota: A formatação exige privilégios de Administrador e apagará todos os dados da unidade.
 5 - Utilitários:
+    tema - Altera as cores do terminal. Ex.: tema 0a (Fundo preto, letras verdes) ou tema padrão para voltar ao original. 
+    Tabela de Referência:
+        0 = Preto, 1 = Azul, 2 = Verde, 3 = Verde-água, 4 = Vermelho, 5 = Roxo, 6 = Amarelo, 7 = Branco, 8 = Cinza, 9 = Azul claro.
+        A = Verde claro, B = Verde-água claro, C = Vermelho claro, D = Lilás, E = Amarelo claro, F = Branco brilhante.
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
     ld - Lista todos os arquivos e diretórios dentro do diretório atual.''')
@@ -556,6 +560,18 @@ while True:
                     print("Erro: Use formatar 'unidade:' 'sistema'.")
             except Exception as e:
                 print(f"Erro de sintaxe ou execução: {e}")
+        case ['tema']:
+            print("Sintaxe: tema [fundo][texto]")
+            print("Exemplo: tema 0a (Fundo preto, letras verdes)")
+            print("Digite 'tema padrão' para voltar ao original.")
+        case ['tema', escolha]:
+            if escolha.lower() == 'padrão':
+                subprocess.run('color 07', shell=True)
+                continue
+            codigo = shlex.split(escolha)[0] if '"' in escolha or "'" in escolha else escolha
+            resultado = subprocess.run(f'color {codigo}', shell=True)
+            if resultado.returncode != 0:
+                print(f"Erro: O código '{codigo}' não é uma combinação de cores válida.")
         case ['sair']:
             break
         case _:
