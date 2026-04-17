@@ -337,6 +337,7 @@ while True:
     verificar_disco - Verifica a integridade de um disco específico. Ex.: verificar_disco 'C:' ou verificar_disco 'D:'. Nota: Para corrigir erros, o terminal deve estar em modo Administrador.
     reparar - Inicia o Verificador de Arquivos do Sistema para reparar arquivos corrompidos do Windows. Ex.: reparar. Nota: O terminal deve estar em modo Administrador para usar esse comando.
     particoes - Abre o Gerenciador de Partições do Windows (Diskpart). CUIDADO: Comandos mal executados podem apagar dados permanentemente. Ex.: particoes
+    formatar - Formata uma unidade específica. Ex.: formatar 'D:' 'ntfs' ou formatar 'E:' 'fat32'. Nota: A formatação exige privilégios de Administrador e apagará todos os dados da unidade.
 5 - Utilitários:
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
@@ -533,6 +534,28 @@ while True:
                 subprocess.run('diskpart', shell=True)
             except Exception as e:
                 print(f"Erro ao abrir Diskpart: {e}")
+        case ['formatar']:
+            print("Sintaxe: formatar 'unidade:' 'sistema'")
+            print("Exemplo: formatar D: ntfs  ou  formatar E: fat32")
+        case ['formatar', argumentos]:
+            if not eh_admin():
+                print("Erro: A formatação exige privilégios de Administrador.")
+                continue
+            try:
+                lista = shlex.split(argumentos)
+                if len(lista) == 2:
+                    unidade = lista[0]
+                    sistema = lista[1].lower()
+                    confirmar = input(f"!!! ATENÇÃO: Isso apagará TODOS os dados de {unidade}. Confirmar? (s/n): ").lower()
+                    if confirmar != 's':
+                        print("Operação cancelada.")
+                        continue
+                    print(f"Formatando {unidade} como {sistema.upper()}... Aguarde.")
+                    executar_comando_simples(f'format {unidade} /FS:{sistema} /Q /X', f'Formatação de Unidade: {unidade}')
+                else:
+                    print("Erro: Use formatar 'unidade:' 'sistema'.")
+            except Exception as e:
+                print(f"Erro de sintaxe ou execução: {e}")
         case ['sair']:
             break
         case _:
