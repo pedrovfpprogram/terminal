@@ -123,6 +123,47 @@
             display: block;
         }
 
+        /* ESTILO DA ABA DE SUGESTÕES */
+        .suggestion-box {
+            background: #161616;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            text-align: center;
+        }
+        .suggestion-box p {
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+        .suggestion-box input, .suggestion-box textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #0d0d0d;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .suggestion-box textarea {
+            height: 100px;
+            resize: none;
+        }
+        .btn-submit {
+            background-color: #00ff41;
+            color: #000;
+            padding: 12px 30px;
+            border: none;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: #00cc33;
+        }
+
         footer {
             text-align: center;
             padding: 60px;
@@ -166,7 +207,7 @@
     <a href="https://github.com/pedrovfpprogram/terminal/releases/download/0.5.0/main.exe" download class="btn-download">
         📥 Baixar Terminal.br (EXE)
     </a>
-    <span class="download-info">Compatível com Windows 10/11 | Versão 0.5.0</span>
+    <span class="download-info">Compatível com Windows 10/11 | Versão 0.6.0</span>
 </header>
 
 <div class="container">
@@ -226,6 +267,23 @@
                 <span class="v-desc">Comandos de rede: <code>ipconfig</code>, <code>ping</code>, <code>tracert</code> e <code>netstat</code>.</span>
             </div>
         </div>
+    </div>
+<div class="section">
+        <h2>Sugestões</h2>
+        <div class="suggestion-box">
+            <p>Tem uma ideia de comando ou funcionalidade? Envie diretamente para o desenvolvedor!</p>
+            
+            <form action="https://formspree.io/f/mgorzeyj" method="POST">
+                <input type="text" name="nome" placeholder="Seu Nome ou Nickname" required>
+                <input type="email" name="_replyto" placeholder="Seu E-mail (opcional)" required>
+                <textarea name="mensagem" placeholder="Descreva sua sugestão de comando ou melhoria..." required></textarea>
+                
+                <input type="hidden" name="_subject" value="Nova Sugestão: Terminal.br">
+                
+                <button type="submit" class="btn-submit">Enviar Sugestão</button>
+            </form>
+        </div>
+    </div>
     </div>
 
 </div>
