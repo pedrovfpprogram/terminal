@@ -299,7 +299,7 @@ def obter_info_filtrada():
         print(f"Erro técnico: {e}")
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos\nColoque o caminho do diretório ou arquivos dentro de aspas.")
-print('Versão 0.6.0')
+print('Versão 0.7.0')
 while True:
     status = "Admin" if eh_admin() else "User"
     prompt_pessoal = f"({status}) {caminho_atual}> "
@@ -656,6 +656,20 @@ while True:
                     print("Uso: agendar desligar [segundos] | agendar reiniciar [segundos] | agendar cancelar")
             except Exception as e:
                 print(f"Erro ao agendar: {e}")
+        case ['proteger', nome]:
+            try:
+                item = shlex.split(nome)[0] if '"' in nome or "'" in nome else nome
+                print(f"Protegendo e ocultando: {item}...")
+                executar_comando_simples(f'attrib +h +s "{item}"', f'Proteção de Item: {item}')
+            except Exception as e:
+                print(f"Erro ao proteger item: {e}")
+        case ['desproteger', nome]:
+            try:
+                item = shlex.split(nome)[0] if '"' in nome or "'" in nome else nome
+                print(f"Removendo proteção de: {item}...")
+                executar_comando_simples(f'attrib -h -s "{item}"', f'Desbloqueio de Item: {item}')
+            except Exception as e:
+                print(f"Erro ao desproteger item: {e}")
         case ['sair']:
             break
         case _:
