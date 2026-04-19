@@ -353,7 +353,11 @@ while True:
     limpar_rastros - Limpa arquivos de cache, logs e relatórios de erro do Windows para melhorar a privacidade e liberar espaço. Ex.: limpar_rastros. Nota: Este comando exige privilégios de Administrador.
     dns_limpar - Reseta o cache de endereços de rede (DNS) para resolver problemas de conexão. Ex.: dns_limpar
     espaço - Mostra o espaço livre e total de cada unidade de disco. Ex.: espaço
-    abrir - Abre uma pasta ou site usando o software padrão do Windows. Ex.: abrir 'C:\Users' ou abrir 'https://www.google.com'.''')
+    abrir - Abre uma pasta ou site usando o software padrão do Windows. Ex.: abrir 'C:\Users' ou abrir 'https://www.google.com'.
+    bateria - Gera um relatório HTML sobre a saúde da bateria (Notebooks). Ex.: bateria.
+    procurar - Busca arquivos ou pastas por nome. Ex.: procurar "relatorio".
+    tarefas_agendadas - Lista scripts e programas que rodam sozinhos no Windows. Ex.: tarefas_agendadas.
+    agendar - Agenda o desligamento ou reinício do computador. Ex.: agendar 'desligar' '60' para desligar em 60 segundos ou agendar 'reiniciar' '120' para reiniciar em 120 segundos.''')
         case ['ld']:
             listar_diretorio(caminho_atual)
         case ['dta']:
@@ -616,6 +620,42 @@ while True:
                 subprocess.run(f'start "" "{item}"', shell=True)
             except Exception as e:
                 print(f"Erro ao abrir: {e}")
+        case ['bateria']:
+            print("Gerando relatório de vida útil da bateria... Aguarde.")
+            executar_comando_simples('powercfg /batteryreport', 'Relatório de Energia/Bateria')
+            print("✔ Relatório gerado como 'battery-report.html'. Use 'abrir battery-report.html' para ver.")
+        case ['procurar', termo]:
+            print(f"Buscando por '{termo}' em {caminho_atual}...")
+            encontrados = list(caminho_atual.rglob(f"*{termo}*"))
+            if encontrados:
+                print(f"\n{'-'*20} Itens Encontrados {'-'*20}")
+                for item in encontrados:
+                    tipo = "DIR" if item.is_dir() else "ARQ"
+                    print(f"[{tipo}] {item.relative_to(caminho_atual)}")
+                print('-'*57)
+            else:
+                print("Nenhum item correspondente encontrado.")
+        case ['tarefas_agendadas']:
+            print("Listando tarefas agendadas do sistema...")
+            executar_comando_simples('schtasks /query /fo TABLE /nh', 'Tarefas Agendadas')
+        case ['agendar', argumentos]:
+            try:
+                lista = shlex.split(argumentos)
+                if lista[0] == 'desligar' and len(lista) == 2:
+                    tempo = lista[1]
+                    print(f"O computador será desligado em {tempo} segundos.")
+                    subprocess.run(f'shutdown /s /t {tempo}', shell=True)
+                elif lista[0] == 'reiniciar' and len(lista) == 2:
+                    tempo = lista[1]
+                    print(f"O computador será reiniciado em {tempo} segundos.")
+                    subprocess.run(f'shutdown /r /t {tempo}', shell=True)
+                elif lista[0] == 'cancelar':
+                    subprocess.run('shutdown /a', shell=True)
+                    print("✔ Todos os agendamentos de desligamento foram cancelados.")
+                else:
+                    print("Uso: agendar desligar [segundos] | agendar reiniciar [segundos] | agendar cancelar")
+            except Exception as e:
+                print(f"Erro ao agendar: {e}")
         case ['sair']:
             break
         case _:
