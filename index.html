@@ -98,6 +98,31 @@
             font-size: 0.9rem;
             margin-left: 10px;
         }
+        
+        .version-history {
+            background: #111;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #222;
+        }
+        .version-item {
+            border-bottom: 1px solid #222;
+            padding: 15px 0;
+        }
+        .version-item:last-child { border-bottom: none; }
+        .v-title {
+            color: #00ff41;
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: block;
+        }
+        .v-desc {
+            font-size: 0.95rem;
+            color: #ccc;
+            margin-top: 5px;
+            display: block;
+        }
+
         footer {
             text-align: center;
             padding: 60px;
@@ -151,32 +176,54 @@
         <p>O <strong>Terminal.br</strong> traduz a complexidade do sistema operacional para comandos intuitivos. Projetado para quem busca produtividade sem precisar decorar flags em inglês.</p>
         
         <div class="terminal-mockup">
-            <div class="term-header">Terminal.br [v0.5.0]</div>
-            <div class="term-line"><span class="prompt">C:\></span> <span class="cmd">reparar</span></div>
-            <div class="term-line" style="color: #00aaaa;">Iniciando verificação de arquivos...</div>
-            <div class="term-line"><span class="output">Verificação concluída. Nenhum erro encontrado.</span></div>
-            <div class="term-line"><span class="prompt">C:\></span> <span class="cmd">_</span></div>
+            <div class="term-header">Terminal.br [v0.6.0]</div>
+            <div class="term-line"><span class="prompt">(Admin) C:\></span> <span class="cmd">limpar_rastros</span></div>
+            <div class="term-line" style="color: #00aaaa;">Iniciando limpeza profunda de logs e caches...</div>
+            <div class="term-line"><span class="output">✔ Limpeza concluída com sucesso!</span></div>
+            <div class="term-line"><span class="prompt">(Admin) C:\></span> <span class="cmd">_</span></div>
         </div>
     </div>
 
     <div class="section">
-        <h2>Funcionalidades Atuais <span class="version-badge">v0.5.0</span></h2>
+        <h2>Funcionalidades Atuais <span class="version-badge">v0.6.0</span></h2>
         <div class="features-grid">
             <div class="feature-card">
-                <h3>🛡️ Manutenção</h3>
-                <p>Repare o Windows e verifique discos com <code>reparar</code> e <code>verificar_disco</code>.</p>
+                <h3>🛡️ Limpeza & Privacidade</h3>
+                <p>Remova logs, caches de miniaturas e relatórios de erro com <code>limpar_rastros</code> e <code>dns_limpar</code>.</p>
             </div>
             <div class="feature-card">
-                <h3>🌐 Rede</h3>
-                <p>Diagnósticos rápidos com <code>rede</code>, <code>testar</code> e <code>rota</code>.</p>
+                <h3>🌐 Diagnósticos</h3>
+                <p>Ferramentas de rede e análise de armazenamento com <code>rede</code>, <code>testar</code> e o novo <code>espaco</code>.</p>
             </div>
             <div class="feature-card">
-                <h3>💾 Discos</h3>
-                <p>Gerenciamento avançado com <code>particoes</code> e <code>formatar</code>.</p>
+                <h3>💾 Manutenção</h3>
+                <p>Controle total de discos e reparo do Windows com <code>reparar</code>, <code>particoes</code> e <code>verificar_disco</code>.</p>
             </div>
             <div class="feature-card">
-                <h3>🎨 Visual</h3>
-                <p>Personalize o seu console com o comando <code>tema</code>.</p>
+                <h3>🚀 Produtividade</h3>
+                <p>Acesso rápido a arquivos e pastas do sistema com o comando <code>abrir</code>.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Histórico de Versões</h2>
+        <div class="version-history">
+            <div class="version-item">
+                <span class="v-title">v0.6.0 - Limpeza e Performance</span>
+                <span class="v-desc">Introdução dos comandos <code>limpar_rastros</code>, <code>dns_limpar</code>, <code>espaco</code> e <code>abrir</code>. Implementação do status de Administrador no prompt.</span>
+            </div>
+            <div class="version-item">
+                <span class="v-title">v0.5.0 - Personalização e Interface</span>
+                <span class="v-desc">Implementação do comando <code>tema</code>, comandos de saída <code>saida</code> e tratamento de aspas.</span>
+            </div>
+            <div class="version-item">
+                <span class="v-title">v0.4.0 - Manutenção e Disco</span>
+                <span class="v-desc">Introdução do <code>chkdsk</code>, <code>sfc /scannow</code>, <code>diskpart</code> e ferramentas de formatação.</span>
+            </div>
+            <div class="version-item">
+                <span class="v-title">v0.3.0 - Redes e Conectividade</span>
+                <span class="v-desc">Comandos de rede: <code>ipconfig</code>, <code>ping</code>, <code>tracert</code> e <code>netstat</code>.</span>
             </div>
         </div>
     </div>
@@ -184,7 +231,7 @@
 </div>
 
 <footer>
-    <p>Terminal.br &copy; 2026 - Desenvolvido por Pedro.</p>
+    <p>Terminal.br &copy; 2026 - Desenvolvido por Pedro VF P.</p>
 </footer>
 
 </body>
