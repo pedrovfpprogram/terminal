@@ -357,7 +357,13 @@ while True:
     bateria - Gera um relatório HTML sobre a saúde da bateria (Notebooks). Ex.: bateria.
     procurar - Busca arquivos ou pastas por nome. Ex.: procurar "relatorio".
     tarefas_agendadas - Lista scripts e programas que rodam sozinhos no Windows. Ex.: tarefas_agendadas.
-    agendar - Agenda o desligamento ou reinício do computador. Ex.: agendar 'desligar' '60' para desligar em 60 segundos ou agendar 'reiniciar' '120' para reiniciar em 120 segundos.''')
+    agendar - Agenda o desligamento ou reinício do computador. Ex.: agendar 'desligar' '60' para desligar em 60 segundos ou agendar 'reiniciar' '120' para reiniciar em 120 segundos.
+    7 - Segurança e Administração Avancada:
+    proteger - Torna um arquivo/pasta invisível e protegido pelo sistema. Ex.: proteger "Segredos".
+    desproteger - Revela um item protegido anteriormente. Ex.: desproteger "Segredos".
+    ponto_restauro - Cria um ponto de restauração do Windows para segurança. Ex.: ponto_restauro "Meu Ponto de Restauração".
+    usuarios_vips - Lista todos os usuários que possuem poder de Administrador no PC. Ex.: usuarios_vips
+    ''')
         case ['ld']:
             listar_diretorio(caminho_atual)
         case ['dta']:
@@ -670,6 +676,20 @@ while True:
                 executar_comando_simples(f'attrib -h -s "{item}"', f'Desbloqueio de Item: {item}')
             except Exception as e:
                 print(f"Erro ao desproteger item: {e}")
+        case ['ponto_restauro']:
+            if not eh_admin():
+                print("Erro: A criação de pontos de restauração exige privilégios de Administrador.")
+                continue
+            print("Criando Ponto de Restauração do Sistema... Isso pode levar um momento.")
+            comando_ps = 'powershell.exe Checkpoint-Computer -Description "Terminal.br_Backup" -RestorePointType "MODIFY_SETTINGS"'
+            try:
+                subprocess.run(comando_ps, shell=True)
+                print("✔ Ponto de restauração 'Terminal.br_Backup' criado com sucesso!")
+            except Exception as e:
+                print(f"Erro ao criar ponto de restauração: {e}")
+        case ['usuarios_vips']:
+            print("Listando usuários com privilégios de Administrador...")
+            executar_comando_simples('net localgroup administradores', 'Administradores do Sistema')
         case ['sair']:
             break
         case _:
