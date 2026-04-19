@@ -299,14 +299,16 @@ def obter_info_filtrada():
         print(f"Erro técnico: {e}")
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos\nColoque o caminho do diretório ou arquivos dentro de aspas.")
-print('Versão 0.5.0')
+print('Versão 0.6.0')
 while True:
-    entrada = input(f'{caminho_atual}>').strip().split(maxsplit=1)
+    status = "Admin" if eh_admin() else "User"
+    prompt_pessoal = f"({status}) {caminho_atual}> "
+    entrada = input(prompt_pessoal).strip().split(maxsplit=1)
     match entrada:
         case []:
             continue
         case ['--comandos']:
-            print('''Comandos:
+            print(r'''Comandos:
 1. Manipulação de arquivos e diretórios:
     dta - Mostra o diretório atual.
     md - Muda para o diretório fornecido. Ex.: md Documents.
@@ -346,7 +348,12 @@ while True:
     saida - Exibe uma mensagem ou redireciona a mensagem para um arquivo. Ex.: echo 'Olá, mundo!' ou echo 'Olá, mundo!' > saudacao.txt
     lp - Limpa a tela do terminal.
     sair - Sai do terminal.
-    ld - Lista todos os arquivos e diretórios dentro do diretório atual.''')
+    ld - Lista todos os arquivos e diretórios dentro do diretório atual.
+    6. Limpeza e Performance:
+    limpar_rastros - Limpa arquivos de cache, logs e relatórios de erro do Windows para melhorar a privacidade e liberar espaço. Ex.: limpar_rastros. Nota: Este comando exige privilégios de Administrador.
+    dns_limpar - Reseta o cache de endereços de rede (DNS) para resolver problemas de conexão. Ex.: dns_limpar
+    espaço - Mostra o espaço livre e total de cada unidade de disco. Ex.: espaço
+    abrir - Abre uma pasta ou site usando o software padrão do Windows. Ex.: abrir 'C:\Users' ou abrir 'https://www.google.com'.''')
         case ['ld']:
             listar_diretorio(caminho_atual)
         case ['dta']:
@@ -580,6 +587,35 @@ while True:
                 subprocess.run(f'echo {conteúdo}', shell=True)
             except Exception as e:
                 print(f"Erro ao executar echo: {e}")
+        case ['limpar_rastros']:
+            if not eh_admin():
+                print("Erro: Este comando exige privilégios de Administrador para acessar pastas do sistema.")
+                continue
+            print("Iniciando limpeza profunda (Logs, Cache e Relatórios de Erro)...")
+            comandos_limpeza = [
+                'del /f /s /q %localappdata%\\Microsoft\\Windows\\Explorer\\thumbcache_*.db', 
+                'del /f /s /q %ProgramData%\\Microsoft\\Windows\\WER\\ReportArchive\\*',    
+                'del /f /s /q %ProgramData%\\Microsoft\\Windows\\WER\\ReportQueue\\*',     
+                'ipconfig /flushdns'                                                        
+            ]
+            for cmd in comandos_limpeza:
+                subprocess.run(cmd, shell=True, capture_output=True)
+            print("✔ Limpeza de rastros e privacidade concluída com sucesso!")
+
+        case ['espaco']:
+            # Uso do wmic para ver espaço de forma limpa
+            print("Analisando unidades de armazenamento...")
+            executar_comando_simples('wmic logicaldisk get caption, freespace, size', 'Espaço em Disco')
+        case ['dns_limpar']:
+            print("Resetando o cache de endereços de rede (DNS)...")
+            executar_comando_simples('ipconfig /flushdns', 'Limpeza de Cache DNS')
+        case ['abrir', alvo]:
+            try:
+                item = shlex.split(alvo)[0] if '"' in alvo or "'" in alvo else alvo
+                print(f"Abrindo: {item}")
+                subprocess.run(f'start "" "{item}"', shell=True)
+            except Exception as e:
+                print(f"Erro ao abrir: {e}")
         case ['sair']:
             break
         case _:
