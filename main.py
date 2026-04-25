@@ -324,7 +324,7 @@ def obter_info_filtrada():
         print(f"Erro técnico: {e}")
 print('Terminal para gerenciamento de arquivos totalmente feito em Português do Brasil.\nObrigado por usar!')
 print("Digite --comandos para ver os comandos\nColoque o caminho do diretório ou arquivos dentro de aspas.")
-print('Versão 0.7.0')
+print('Versão 1.0.0')
 while True:
     status = "Admin" if eh_admin() else "User"
     prompt_pessoal = f"({status}) {caminho_atual}> "
