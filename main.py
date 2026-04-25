@@ -4,7 +4,32 @@ from colorama import init
 from datetime import datetime
 import shlex
 import subprocess
-import ctypes, os
+import ctypes
+import os
+from dotenv import load_dotenv
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+import google.generativeai as genai
+load_dotenv()
+chave_api = os.getenv("GEMINI_API_KEY")
+if chave_api:
+    genai.configure(api_key=chave_api)
+else:
+    print("!] Chave de API não encontrada.")
+def consultar_ia(pergunta, comandos_disponiveis):
+    try:
+        model = genai.GenerativeModel('gemini-2.5-flash')
+        instrucao = f"""
+        Você é o Terminal.br. Retorne APENAS o comando e a explicação.
+        LISTA: {comandos_disponiveis}
+        FORMATO:
+        Comando: [comando]
+        Explicação: [resumo]
+        """
+        response = model.generate_content(f"{instrucao}\nPergunta: {pergunta}")
+        return response.text
+    except Exception as e:
+        return f"Erro de conexão: {e}"
 def eh_admin():
     try:
         return ctypes.windll.shell32.IsUserAnAdmin()
@@ -304,12 +329,8 @@ while True:
     status = "Admin" if eh_admin() else "User"
     prompt_pessoal = f"({status}) {caminho_atual}> "
     entrada = input(prompt_pessoal).strip().split(maxsplit=1)
-    match entrada:
-        case []:
-            continue
-        case ['--comandos']:
-            print(r'''Comandos:
-1. Manipulação de arquivos e diretórios:
+    comandos = r'''Comandos:
+    1. Manipulação de arquivos e diretórios:
     dta - Mostra o diretório atual.
     md - Muda para o diretório fornecido. Ex.: md Documents.
     crdir - Cria um novo diretório usando o nome fornecido. Ex.: crdir "nome do diretorio".
@@ -362,8 +383,14 @@ while True:
     proteger - Torna um arquivo/pasta invisível e protegido pelo sistema. Ex.: proteger "Segredos".
     desproteger - Revela um item protegido anteriormente. Ex.: desproteger "Segredos".
     ponto_restauro - Cria um ponto de restauração do Windows para segurança. Ex.: ponto_restauro "Meu Ponto de Restauração".
-    usuarios_vips - Lista todos os usuários que possuem poder de Administrador no PC. Ex.: usuarios_vips
-    ''')
+    usuarios_vips - Lista todos os usuários que possuem poder de Administrador no PC. Ex.: usuarios_vips.
+    8 - Inteligência Aritifical:
+    ia - Faça uma pergunta para a IA sobre como usar um comando ou peça ajuda. Ex.: ia 'Como uso o comando md?'.'''
+    match entrada:
+        case []:
+            continue
+        case ['--comandos']:
+            print(comandos)
         case ['ld']:
             listar_diretorio(caminho_atual)
         case ['dta']:
@@ -690,6 +717,17 @@ while True:
         case ['usuarios_vips']:
             print("Listando usuários com privilégios de Administrador...")
             executar_comando_simples('net localgroup administradores', 'Administradores do Sistema')
+        case ['ia']:
+            print("Sintaxe: ia 'pergunta'")
+        case ['ia', pergunta]:
+            ajuda_ia = comandos
+            print("IA pensando... 🧠")
+            resposta = consultar_ia(pergunta, ajuda_ia)
+            print("\n" + "="*30)
+            print(resposta)
+            print("="*30)
+            if "Comando:" in resposta:
+                print("Parece que a IA sugeriu um comando. Digite ele para testar.")
         case ['sair']:
             break
         case _:
