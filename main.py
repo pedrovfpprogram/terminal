@@ -11,7 +11,7 @@ import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 import google.generativeai as genai
 load_dotenv()
-chave_api = os.getenv("GEMINI_API_KEY")
+chave_api ="AIzaSyBZZ_BEazKfbMxGhoE3R2HqV01tVeJorFU"
 if chave_api:
     genai.configure(api_key=chave_api)
 else:
